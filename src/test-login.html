@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Test</title>
+</head>
+<body>
+    <h1>Login Test</h1>
+    <form id="loginForm">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username.trim()) {
+                // Save user to localStorage
+                const user = {
+                    username: username,
+                    loginTime: new Date().toISOString()
+                };
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Show success message
+                document.getElementById('result').innerHTML = 'Login successful! User saved to localStorage.';
+                
+                // Show what's in localStorage
+                console.log('currentUser in localStorage:', localStorage.getItem('currentUser'));
+            } else {
+                document.getElementById('result').innerHTML = 'Please enter a username.';
+            }
+        });
+        
+        // Check if user is already logged in
+        window.addEventListener('load', function() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                try {
+                    const user = JSON.parse(savedUser);
+                    document.getElementById('result').innerHTML = 'Already logged in as: ' + user.username;
+                } catch (e) {
+                    console.error('Error parsing saved user data:', e);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
