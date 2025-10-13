@@ -11,6 +11,7 @@ A comprehensive web-based application for managing student information, attendan
 - **Result Generation**: Create professional-looking result reports with PDF export functionality.
 - **Multi-language Support**: Available in both English and Marathi.
 - **Responsive Design**: Works seamlessly on desktop and mobile devices.
+- **GitHub Pages Deployment**: Successfully configured for deployment to GitHub Pages
 
 ## Technologies Used
 
