@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #3498db;
+            border-radius: 5px;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px 0;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #2980b9;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Management App Test</h1>
+        
+        <div class="step">
+            <h3>Step 1: Check if the development server is running</h3>
+            <p>The development server should be running at: <strong>http://localhost:5175</strong></p>
+            <button class="button" onclick="checkServer()">Check Server Status</button>
+            <div id="serverStatus"></div>
+        </div>
+        
+        <div class="step">
+            <h3>Step 2: Test localStorage functionality</h3>
+            <button class="button" onclick="testLocalStorage()">Test localStorage</button>
+            <div id="localStorageStatus"></div>
+        </div>
+        
+        <div class="step">
+            <h3>Step 3: Open the application</h3>
+            <p>If the above tests pass, you can open the application in a new tab:</p>
+            <a href="http://localhost:5175" target="_blank" class="button">Open Student Management App</a>
+        </div>
+    </div>
+
+    <script>
+        function checkServer() {
+            const statusDiv = document.getElementById('serverStatus');
+            statusDiv.innerHTML = '<div class="status">Checking server...</div>';
+            
+            fetch('http://localhost:5175')
+                .then(response => {
+                    if (response.ok) {
+                        statusDiv.innerHTML = '<div class="status success">✓ Server is running correctly!</div>';
+                    } else {
+                        statusDiv.innerHTML = '<div class="status error">✗ Server returned an error: ' + response.status + '</div>';
+                    }
+                })
+                .catch(error => {
+                    statusDiv.innerHTML = '<div class="status error">✗ Server is not accessible. Please make sure the development server is running. Error: ' + error.message + '</div>';
+                });
+        }
+        
+        function testLocalStorage() {
+            const statusDiv = document.getElementById('localStorageStatus');
+            
+            try {
+                // Test localStorage
+                const testKey = 'student_management_test';
+                const testValue = 'test_value';
+                
+                localStorage.setItem(testKey, testValue);
+                const retrievedValue = localStorage.getItem(testKey);
+                localStorage.removeItem(testKey);
+                
+                if (retrievedValue === testValue) {
+                    statusDiv.innerHTML = '<div class="status success">✓ localStorage is working correctly!</div>';
+                } else {
+                    statusDiv.innerHTML = '<div class="status error">✗ localStorage test failed</div>';
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="status error">✗ localStorage is not available. Error: ' + error.message + '</div>';
+            }
+        }
+    </script>
+</body>
+</html>

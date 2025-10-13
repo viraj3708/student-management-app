@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Student Management App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-top: 0;
+            font-size: 2.5rem;
+        }
+
+        .status {
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.2rem;
+        }
+
+        .checking {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid rgba(52, 152, 219, 0.5);
+        }
+
+        .success {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid rgba(46, 204, 113, 0.5);
+            color: #27ae60;
+        }
+
+        .error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            color: #c0392b;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.6);
+        }
+
+        .button.primary {
+            background: linear-gradient(135deg, #27ae60, #219653);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .button.primary:hover {
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.6);
+        }
+
+        .instructions {
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+            border-left: 5px solid #3498db;
+        }
+
+        .instructions h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Student Management App Test</h1>
+        
+        <div id="status" class="status checking">
+            🔍 Checking if the application is running...
+        </div>
+        
+        <div id="actions" style="display: none;">
+            <button class="button primary" onclick="openApp()">Open Student Management App</button>
+            <button class="button" onclick="retryCheck()">Retry Check</button>
+        </div>
+        
+        <div class="instructions">
+            <h3>📋 Instructions:</h3>
+            <ol>
+                <li>Make sure the development server is running (you should see a terminal window with Vite running)</li>
+                <li>Click "Open Student Management App" to access the application</li>
+                <li>If you're having issues, try restarting the server by running <code>start-app.bat</code></li>
+                <li>For installation, run <code>create-installer.bat</code> to prepare the installation package</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function checkApp() {
+            const statusDiv = document.getElementById('status');
+            const actionsDiv = document.getElementById('actions');
+            
+            statusDiv.className = 'status checking';
+            statusDiv.innerHTML = '🔍 Checking if the application is running...';
+            actionsDiv.style.display = 'none';
+            
+            fetch('http://localhost:5175')
+                .then(response => {
+                    if (response.ok) {
+                        statusDiv.className = 'status success';
+                        statusDiv.innerHTML = '✅ Application is running successfully!<br>You can now access it at <strong>http://localhost:5175</strong>';
+                        actionsDiv.style.display = 'block';
+                    } else {
+                        throw new Error('Server returned status ' + response.status);
+                    }
+                })
+                .catch(error => {
+                    statusDiv.className = 'status error';
+                    statusDiv.innerHTML = '❌ Application is not accessible.<br>Error: ' + error.message + '<br><br>Please make sure the development server is running.';
+                    actionsDiv.style.display = 'block';
+                });
+        }
+        
+        function openApp() {
+            window.open('http://localhost:5175', '_blank');
+        }
+        
+        function retryCheck() {
+            checkApp();
+        }
+        
+        // Check on page load
+        window.addEventListener('load', checkApp);
+    </script>
+</body>
+</html>

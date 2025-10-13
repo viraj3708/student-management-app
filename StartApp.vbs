@@ -1,0 +1,1 @@
+CreateObject("Wscript.Shell").Run "c:\Users\ADMIN\Desktop\APP CREATION\STUDENT MANAGEMENT\student-management-app\START-APP.bat", 0, False

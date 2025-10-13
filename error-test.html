@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error Handling Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Error Handling Test</h1>
+        
+        <div class="test-section">
+            <h2>Basic Functionality Tests</h2>
+            <button onclick="testBasicFunctions()">Test Basic Functions</button>
+            <div id="basicResult"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>LocalStorage Tests</h2>
+            <button onclick="testLocalStorage()">Test LocalStorage</button>
+            <button onclick="testLocalStorageError()">Test LocalStorage Error</button>
+            <div id="localStorageResult"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>JSON Tests</h2>
+            <button onclick="testJSON()">Test JSON Operations</button>
+            <button onclick="testJSONError()">Test JSON Error</button>
+            <div id="jsonResult"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Console Output</h2>
+            <button onclick="clearConsole()">Clear Console</button>
+            <div id="consoleOutput" style="background: #000; color: #0f0; padding: 10px; font-family: monospace; height: 200px; overflow: auto;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Console output capture
+        const originalLog = console.log;
+        const originalError = console.error;
+        const consoleOutput = document.getElementById('consoleOutput');
+        
+        console.log = function() {
+            originalLog.apply(console, arguments);
+            addToConsole('LOG: ' + Array.from(arguments).join(' '));
+        };
+        
+        console.error = function() {
+            originalError.apply(console, arguments);
+            addToConsole('ERROR: ' + Array.from(arguments).join(' '), 'error');
+        };
+        
+        function addToConsole(message, type) {
+            const div = document.createElement('div');
+            div.textContent = message;
+            if (type === 'error') {
+                div.style.color = '#ff6b6b';
+            }
+            consoleOutput.appendChild(div);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        function clearConsole() {
+            consoleOutput.innerHTML = '';
+        }
+        
+        // Test functions
+        function showResult(elementId, message, type) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.innerHTML = message;
+            resultDiv.className = 'result ' + type;
+        }
+        
+        function testBasicFunctions() {
+            try {
+                console.log('Testing basic functions...');
+                
+                // Test basic operations
+                const testValue = 'test';
+                const result = testValue.toUpperCase();
+                
+                if (result === 'TEST') {
+                    showResult('basicResult', 'Basic functions working correctly', 'success');
+                } else {
+                    showResult('basicResult', 'Unexpected result: ' + result, 'error');
+                }
+            } catch (error) {
+                showResult('basicResult', 'Error: ' + error.message, 'error');
+                console.error('Basic functions error:', error);
+            }
+        }
+        
+        function testLocalStorage() {
+            try {
+                console.log('Testing localStorage...');
+                
+                // Test localStorage functionality
+                const testKey = 'testKey_' + Date.now();
+                const testValue = 'testValue_' + Date.now();
+                
+                localStorage.setItem(testKey, testValue);
+                const retrievedValue = localStorage.getItem(testKey);
+                localStorage.removeItem(testKey);
+                
+                if (retrievedValue === testValue) {
+                    showResult('localStorageResult', 'LocalStorage working correctly', 'success');
+                } else {
+                    showResult('localStorageResult', 'LocalStorage test failed', 'error');
+                }
+            } catch (error) {
+                showResult('localStorageResult', 'Error: ' + error.message, 'error');
+                console.error('LocalStorage error:', error);
+            }
+        }
+        
+        function testLocalStorageError() {
+            try {
+                console.log('Testing localStorage error handling...');
+                
+                // This should work in normal circumstances
+                localStorage.setItem('test', 'value');
+                showResult('localStorageResult', 'LocalStorage error test completed (no error occurred)', 'info');
+            } catch (error) {
+                showResult('localStorageResult', 'Caught localStorage error: ' + error.message, 'error');
+                console.error('LocalStorage error caught:', error);
+            }
+        }
+        
+        function testJSON() {
+            try {
+                console.log('Testing JSON operations...');
+                
+                // Test JSON functionality
+                const testData = { name: 'test', value: 123 };
+                const jsonString = JSON.stringify(testData);
+                const parsedData = JSON.parse(jsonString);
+                
+                if (parsedData.name === 'test' && parsedData.value === 123) {
+                    showResult('jsonResult', 'JSON operations working correctly', 'success');
+                } else {
+                    showResult('jsonResult', 'JSON test failed', 'error');
+                }
+            } catch (error) {
+                showResult('jsonResult', 'Error: ' + error.message, 'error');
+                console.error('JSON error:', error);
+            }
+        }
+        
+        function testJSONError() {
+            try {
+                console.log('Testing JSON error handling...');
+                
+                // Test with invalid JSON
+                const invalidJSON = '{"name": "test", "value":}';
+                JSON.parse(invalidJSON);
+                
+                showResult('jsonResult', 'JSON error test failed (no error occurred)', 'error');
+            } catch (error) {
+                showResult('jsonResult', 'Caught JSON error correctly: ' + error.message, 'success');
+                console.log('JSON error caught as expected:', error.message);
+            }
+        }
+        
+        // Initialize
+        console.log('Error handling test page loaded');
+    </script>
+</body>
+</html>

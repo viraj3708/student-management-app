@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login Test</h1>
+        <div>
+            <input type="text" id="username" placeholder="Enter username">
+            <button onclick="performLogin()">Login</button>
+            <button onclick="checkLoginStatus()">Check Login Status</button>
+            <button onclick="logout()">Logout</button>
+            <button onclick="clearAllData()">Clear All Data</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function performLogin() {
+            const username = document.getElementById('username').value;
+            if (!username) {
+                showResult('Please enter a username', 'error');
+                return;
+            }
+            
+            const user = {
+                username: username,
+                loginTime: new Date().toISOString()
+            };
+            
+            try {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showResult('Logged in as: ' + username, 'success');
+            } catch (error) {
+                showResult('Error logging in: ' + error.message, 'error');
+            }
+        }
+        
+        function checkLoginStatus() {
+            try {
+                const user = localStorage.getItem('currentUser');
+                if (user) {
+                    const parsedUser = JSON.parse(user);
+                    showResult('Currently logged in as: ' + parsedUser.username, 'success');
+                } else {
+                    showResult('Not logged in', 'error');
+                }
+            } catch (error) {
+                showResult('Error checking login status: ' + error.message, 'error');
+            }
+        }
+        
+        function logout() {
+            try {
+                localStorage.removeItem('currentUser');
+                showResult('Logged out successfully', 'success');
+            } catch (error) {
+                showResult('Error logging out: ' + error.message, 'error');
+            }
+        }
+        
+        function clearAllData() {
+            try {
+                localStorage.clear();
+                showResult('All data cleared', 'success');
+            } catch (error) {
+                showResult('Error clearing data: ' + error.message, 'error');
+            }
+        }
+        
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = message;
+            resultDiv.className = 'result ' + type;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .button {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Management App - Troubleshooting</h1>
+        
+        <div class="step">
+            <h3>Step 1: Check Browser Console</h3>
+            <p>Press <strong>F12</strong> or <strong>Ctrl+Shift+I</strong> to open Developer Tools, then click on the "Console" tab to check for any error messages.</p>
+        </div>
+        
+        <div class="step">
+            <h3>Step 2: Clear Browser Cache</h3>
+            <p>Sometimes cached files can cause issues. Try clearing your browser cache:</p>
+            <ul>
+                <li>Press <strong>Ctrl+Shift+Delete</strong></li>
+                <li>Select "Cached images and files"</li>
+                <li>Click "Clear data"</li>
+            </ul>
+        </div>
+        
+        <div class="step">
+            <h3>Step 3: Try Different Browser</h3>
+            <p>If the app still doesn't work, try opening it in a different browser (Chrome, Firefox, Edge, etc.)</p>
+        </div>
+        
+        <div class="step">
+            <h3>Step 4: Check Local Storage</h3>
+            <p>In Developer Tools, go to the "Application" tab, then "Local Storage" to see if data is being stored correctly.</p>
+        </div>
+        
+        <div class="step">
+            <h3>Step 5: Restart the Application</h3>
+            <p>If none of the above steps work, try restarting the application:</p>
+            <a href="http://localhost:4178" class="button">Restart Application</a>
+        </div>
+        
+        <div class="success">
+            <strong>Success Message:</strong> If you can see this message, the web server is working correctly. The issue might be with the React application itself.
+        </div>
+        
+        <div class="error">
+            <strong>Error Message:</strong> If you cannot see the application interface, there might be a JavaScript error preventing it from loading.
+        </div>
+    </div>
+</body>
+</html>

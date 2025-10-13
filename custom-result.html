@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Result Output</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        select, button {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 16px;
+        }
+
+        button {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .print-button {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+        }
+
+        .back-button {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        .result-container {
+            display: none;
+        }
+
+        /* Custom Result Output Styles */
+        .custom-result-output {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .result-page {
+            page-break-after: always;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-page.landscape {
+            width: 100%;
+            min-height: 210mm; /* A4 landscape height */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-column {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin: 10px;
+        }
+
+        .page-column.left-column {
+            flex: 1;
+            border-right: 2px dashed #ccc;
+        }
+
+        .page-column.right-column {
+            flex: 1;
+        }
+
+        .school-header-section {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .school-name {
+            font-size: 28px;
+            color: #2c3e50;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #2c3e50;
+            margin: 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .profile-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-item.full-width {
+            grid-column: span 2;
+        }
+
+        .profile-item .label {
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .profile-item .value {
+            color: #2c3e50;
+        }
+
+        .health-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .health-item {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .health-item .label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .health-item .value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .attendance-section {
+            margin-bottom: 20px;
+        }
+
+        .attendance-summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .summary-item .label {
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .summary-item .value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .attendance-table-container {
+            overflow-x: auto;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .attendance-table th,
+        .attendance-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .attendance-table th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        .attendance-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .grading-system-section {
+            margin-top: 20px;
+        }
+
+        .grading-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .marks-section {
+            margin-bottom: 20px;
+        }
+
+        .marks-table-container {
+            overflow-x: auto;
+        }
+
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .marks-table th,
+        .marks-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .marks-table th {
+            background: #27ae60;
+            color: white;
+            font-weight: bold;
+        }
+
+        .marks-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .grade-a1 { color: #27ae60; font-weight: bold; }
+        .grade-a2 { color: #2ecc71; font-weight: bold; }
+        .grade-b1 { color: #3498db; font-weight: bold; }
+        .grade-b2 { color: #9b59b6; font-weight: bold; }
+        .grade-c1 { color: #f39c12; font-weight: bold; }
+        .grade-c2 { color: #e67e22; font-weight: bold; }
+        .grade-d1 { color: #e74c3c; font-weight: bold; }
+        .grade-d2 { color: #c0392b; font-weight: bold; }
+        .grade-na { color: #7f8c8d; font-weight: bold; }
+
+        .signature-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #3498db;
+            grid-column: span 2;
+        }
+
+        .signature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .signature-item {
+            text-align: center;
+        }
+
+        .signature-line {
+            height: 1px;
+            background: #000;
+            margin-bottom: 10px;
+        }
+
+        .signature-label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .signature-name {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                animation: none;
+            }
+
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+
+            .header, .controls {
+                display: none;
+            }
+
+            .custom-result-output {
+                padding: 0;
+            }
+            
+            .result-page {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .page-column {
+                border: none;
+                padding: 10px;
+                margin: 0;
+            }
+            
+            .page-column.left-column {
+                border-right: 2px dashed #ccc;
+            }
+            
+            .school-name {
+                font-size: 24px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            .profile-info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .health-info-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .attendance-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .signature-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Responsive Styles for Screen */
+        @media screen and (max-width: 768px) {
+            .result-page.landscape {
+                flex-direction: column;
+            }
+            
+            .page-column {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px dashed #ccc;
+            }
+            
+            .profile-info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .health-info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .attendance-summary {
+                grid-template-columns: 1fr;
+            }
+            
+            .signature-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Custom Result Output</h1>
+            <p>View and print student results in the custom format</p>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="classSelect">Select Class:</label>
+                <select id="classSelect">
+                    <option value="">-- Select Class --</option>
+                    <option value="1">Class 1</option>
+                    <option value="2">Class 2</option>
+                    <option value="3">Class 3</option>
+                    <option value="4">Class 4</option>
+                    <option value="5">Class 5</option>
+                    <option value="6">Class 6</option>
+                    <option value="7">Class 7</option>
+                    <option value="8">Class 8</option>
+                    <option value="9">Class 9</option>
+                    <option value="10">Class 10</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="studentSelect">Select Student:</label>
+                <select id="studentSelect" disabled>
+                    <option value="">-- Select Student --</option>
+                </select>
+            </div>
+            
+            <button id="viewResultBtn" disabled>View Result</button>
+            <button id="printBtn" class="print-button" disabled>Print Result</button>
+            <button id="backBtn" class="back-button" onclick="window.location.href='/'">Back to App</button>
+        </div>
+        
+        <div id="resultContainer" class="result-container">
+            <!-- Result will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Sample data structure - in a real app, this would come from localStorage
+        const sampleStudents = [
+            {
+                id: 1,
+                studentName: "John Doe",
+                class: "5",
+                gender: "Male",
+                caste: "General",
+                dob: "2010-05-15",
+                registrationNumber: "STU001",
+                fatherName: "Robert Doe",
+                motherName: "Jane Doe",
+                motherTongue: "English",
+                medium: "English",
+                address: "123 Main Street, City",
+                phoneNumber: "123-456-7890",
+                height: 140,
+                weight: 35,
+                schoolName: "Greenwood Elementary School"
+            },
+            {
+                id: 2,
+                studentName: "Jane Smith",
+                class: "5",
+                gender: "Female",
+                caste: "OBC",
+                dob: "2010-08-22",
+                registrationNumber: "STU002",
+                fatherName: "Michael Smith",
+                motherName: "Sarah Smith",
+                motherTongue: "English",
+                medium: "English",
+                address: "456 Oak Avenue, City",
+                phoneNumber: "098-765-4321",
+                height: 138,
+                weight: 32,
+                schoolName: "Greenwood Elementary School"
+            }
+        ];
+
+        // DOM elements
+        const classSelect = document.getElementById('classSelect');
+        const studentSelect = document.getElementById('studentSelect');
+        const viewResultBtn = document.getElementById('viewResultBtn');
+        const printBtn = document.getElementById('printBtn');
+        const resultContainer = document.getElementById('resultContainer');
+
+        // Event listeners
+        classSelect.addEventListener('change', handleClassChange);
+        studentSelect.addEventListener('change', handleStudentChange);
+        viewResultBtn.addEventListener('click', viewResult);
+        printBtn.addEventListener('click', () => window.print());
+
+        // Handle class selection
+        function handleClassChange() {
+            const selectedClass = classSelect.value;
+            
+            // Clear student select
+            studentSelect.innerHTML = '<option value="">-- Select Student --</option>';
+            studentSelect.disabled = !selectedClass;
+            viewResultBtn.disabled = true;
+            
+            if (selectedClass) {
+                // Filter students by class (in real app, this would come from localStorage)
+                const classStudents = sampleStudents.filter(student => student.class === selectedClass);
+                
+                // Populate student select
+                classStudents.forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student.id;
+                    option.textContent = student.studentName;
+                    studentSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Handle student selection
+        function handleStudentChange() {
+            viewResultBtn.disabled = !studentSelect.value;
+        }
+
+        // View result
+        function viewResult() {
+            const studentId = parseInt(studentSelect.value);
+            const student = sampleStudents.find(s => s.id === studentId);
+            
+            if (student) {
+                resultContainer.innerHTML = generateResultHTML(student);
+                resultContainer.style.display = 'block';
+                printBtn.disabled = false;
+                
+                // Scroll to result
+                resultContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Generate result HTML
+        function generateResultHTML(student) {
+            // Calculate BMI
+            function calculateBMI(height, weight) {
+                if (!height || !weight) return 'N/A';
+                const heightInMeters = height / 100;
+                const bmi = weight / (heightInMeters * heightInMeters);
+                return bmi.toFixed(1);
+            }
+
+            // Grade calculation function
+            function calculateGrade(marks) {
+                if (marks === '' || marks === null || marks === undefined || isNaN(marks)) return 'N/A';
+                const mark = parseInt(marks);
+                
+                if (mark >= 91 && mark <= 100) return 'A1';
+                if (mark >= 81 && mark <= 90) return 'A2';
+                if (mark >= 71 && mark <= 80) return 'B1';
+                if (mark >= 60 && mark <= 70) return 'B2';
+                if (mark >= 51 && mark <= 60) return 'C1';
+                if (mark >= 41 && mark <= 50) return 'C2';
+                if (mark >= 31 && mark <= 40) return 'D1';
+                if (mark <= 30 && mark >= 0) return 'D2';
+                
+                return 'N/A';
+            }
+
+            // Get grade code for CSS class
+            function getGradeCode(marks) {
+                if (marks === '' || marks === null || marks === undefined || isNaN(marks)) return 'na';
+                const mark = parseInt(marks);
+                
+                if (mark >= 91 && mark <= 100) return 'a1';
+                if (mark >= 81 && mark <= 90) return 'a2';
+                if (mark >= 71 && mark <= 80) return 'b1';
+                if (mark >= 60 && mark <= 70) return 'b2';
+                if (mark >= 51 && mark <= 60) return 'c1';
+                if (mark >= 41 && mark <= 50) return 'c2';
+                if (mark >= 31 && mark <= 40) return 'd1';
+                if (mark <= 30 && mark >= 0) return 'd2';
+                
+                return 'na';
+            }
+
+            // Sample attendance data
+            const attendanceData = [
+                { month: "January 2023", present: 20, absent: 2 },
+                { month: "February 2023", present: 18, absent: 7 },
+                { month: "March 2023", present: 22, absent: 3 }
+            ];
+
+            // Sample marks data
+            const term1Marks = [
+                { name: "Mathematics", marks: "85" },
+                { name: "English", marks: "78" },
+                { name: "Science", marks: "92" },
+                { name: "Social Studies", marks: "88" }
+            ];
+
+            const term2Marks = [
+                { name: "Mathematics", marks: "88" },
+                { name: "English", marks: "82" },
+                { name: "Science", marks: "90" },
+                { name: "Social Studies", marks: "85" }
+            ];
+
+            return `
+                <div class="custom-result-output">
+                    <!-- PAGE 1 - LANDSCAPE MODE -->
+                    <div class="result-page page-1 landscape">
+                        <!-- LEFT COLUMN - ATTENDANCE RECORD AND HEALTH INFO (MOVED TO 1ST PLACE) -->
+                        <div class="page-column left-column">
+                            <!-- SCHOOL NAME -->
+                            <div class="school-header-section">
+                                <h1 class="school-name">${student.schoolName || "School Name"}</h1>
+                            </div>
+
+                            <!-- ATTENDANCE RECORD (MOVED TO 1ST POSITION) -->
+                            <div class="attendance-section">
+                                <h2 class="section-title">Attendance Record</h2>
+                                <div class="attendance-summary">
+                                    <div class="summary-item">
+                                        <span class="label">Total Present:</span>
+                                        <span class="value">
+                                            ${attendanceData.reduce((sum, record) => sum + (record.present || 0), 0)}
+                                        </span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span class="label">Total Absent:</span>
+                                        <span class="value">
+                                            ${attendanceData.reduce((sum, record) => sum + (record.absent || 0), 0)}
+                                        </span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span class="label">Total Days:</span>
+                                        <span class="value">
+                                            ${attendanceData.reduce((sum, record) => sum + (record.present || 0) + (record.absent || 0), 0)}
+                                        </span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span class="label">Percentage:</span>
+                                        <span class="value">
+                                            ${(() => {
+                                                const total = attendanceData.reduce((sum, record) => sum + (record.present || 0) + (record.absent || 0), 0);
+                                                const present = attendanceData.reduce((sum, record) => sum + (record.present || 0), 0);
+                                                return total > 0 ? ((present / total) * 100).toFixed(1) + '%' : 'N/A';
+                                            })()}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- ATTENDANCE TABLE -->
+                                <div class="attendance-table-container">
+                                    <table class="attendance-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Month</th>
+                                                <th>Present</th>
+                                                <th>Absent</th>
+                                                <th>Total</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${attendanceData.map(record => `
+                                                <tr>
+                                                    <td>${record.month}</td>
+                                                    <td>${record.present || 0}</td>
+                                                    <td>${record.absent || 0}</td>
+                                                    <td>${(record.present || 0) + (record.absent || 0)}</td>
+                                                    <td>
+                                                        ${(record.present || 0) + (record.absent || 0) > 0 
+                                                            ? (((record.present || 0) / ((record.present || 0) + (record.absent || 0))) * 100).toFixed(1) + '%'
+                                                            : 'N/A'}
+                                                    </td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- HEALTH INFO (MOVED BELOW ATTENDANCE RECORD) -->
+                            <div class="health-info-section">
+                                <h2 class="section-title">Health Information</h2>
+                                <div class="health-info-grid">
+                                    <div class="health-item">
+                                        <span class="label">Height:</span>
+                                        <span class="value">${student.height || 'N/A'} cm</span>
+                                    </div>
+                                    <div class="health-item">
+                                        <span class="label">Weight:</span>
+                                        <span class="value">${student.weight || 'N/A'} kg</span>
+                                    </div>
+                                    <div class="health-item">
+                                        <span class="label">BMI:</span>
+                                        <span class="value">${calculateBMI(student.height, student.weight)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN - STUDENT PROFILE (MOVED TO RIGHT) -->
+                        <div class="page-column right-column">
+                            <!-- STUDENT PROFILE (MOVED TO RIGHT COLUMN) -->
+                            <div class="student-profile-section">
+                                <h2 class="section-title">Student Profile</h2>
+                                <div class="profile-info-grid">
+                                    <div class="profile-item">
+                                        <span class="label">Name:</span>
+                                        <span class="value">${student.studentName}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Class:</span>
+                                        <span class="value">${student.class}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Gender:</span>
+                                        <span class="value">${student.gender}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Caste:</span>
+                                        <span class="value">${student.caste}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Date of Birth:</span>
+                                        <span class="value">${student.dob}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Registration No:</span>
+                                        <span class="value">${student.registrationNumber}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Father's Name:</span>
+                                        <span class="value">${student.fatherName}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Mother's Name:</span>
+                                        <span class="value">${student.motherName}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Mother Tongue:</span>
+                                        <span class="value">${student.motherTongue}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Medium:</span>
+                                        <span class="value">${student.medium}</span>
+                                    </div>
+                                    <div class="profile-item full-width">
+                                        <span class="label">Address:</span>
+                                        <span class="value">${student.address}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Phone Number:</span>
+                                        <span class="value">${student.phoneNumber}</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Height:</span>
+                                        <span class="value">${student.height} cm</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">Weight:</span>
+                                        <span class="value">${student.weight} kg</span>
+                                    </div>
+                                    <div class="profile-item">
+                                        <span class="label">BMI:</span>
+                                        <span class="value">${calculateBMI(student.height, student.weight)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- GRADING SYSTEM INFO -->
+                            <div class="grading-system-section">
+                                <h2 class="section-title">Grading System</h2>
+                                <div class="grading-info">
+                                    <p>Grading is based on percentage: A1 (91-100%), A2 (81-90%), B1 (71-80%), B2 (60-70%), C1 (51-60%), C2 (41-50%), D1 (31-40%), D2 (0-30%)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAGE 2 - LANDSCAPE MODE -->
+                    <div class="result-page page-2 landscape">
+                        <!-- LEFT COLUMN - TERM 1 MARKS -->
+                        <div class="page-column left-column">
+                            <div class="marks-section">
+                                <h2 class="section-title">Term 1 Marks Record</h2>
+                                <div class="marks-table-container">
+                                    <table class="marks-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>Marks</th>
+                                                <th>Grade</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${term1Marks.map(subject => `
+                                                <tr>
+                                                    <td>${subject.name}</td>
+                                                    <td>${subject.marks || 'N/A'}</td>
+                                                    <td class="grade-${getGradeCode(subject.marks)}">
+                                                        ${calculateGrade(subject.marks)}
+                                                    </td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN - TERM 2 MARKS -->
+                        <div class="page-column right-column">
+                            <div class="marks-section">
+                                <h2 class="section-title">Term 2 Marks Record</h2>
+                                <div class="marks-table-container">
+                                    <table class="marks-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>Marks</th>
+                                                <th>Grade</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${term2Marks.map(subject => `
+                                                <tr>
+                                                    <td>${subject.name}</td>
+                                                    <td>${subject.marks || 'N/A'}</td>
+                                                    <td class="grade-${getGradeCode(subject.marks)}">
+                                                        ${calculateGrade(subject.marks)}
+                                                    </td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SIGNATURE SECTION - SPANS BOTH COLUMNS -->
+                        <div class="signature-section">
+                            <h2 class="section-title">Signature Section</h2>
+                            <div class="signature-grid">
+                                <div class="signature-item">
+                                    <div class="signature-line"></div>
+                                    <div class="signature-label">Teacher's Signature</div>
+                                    <div class="signature-name">(Teacher Name: ${student.class} Class)</div>
+                                </div>
+                                <div class="signature-item">
+                                    <div class="signature-line"></div>
+                                    <div class="signature-label">Principal's Signature</div>
+                                </div>
+                                <div class="signature-item">
+                                    <div class="signature-line"></div>
+                                    <div class="signature-label">Parent's Signature</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

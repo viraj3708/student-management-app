@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Student Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ffd700, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        nav button {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 15px 25px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            min-width: 180px;
+        }
+
+        nav button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        nav button.active {
+            background: linear-gradient(45deg, #ff8a00, #e52e71);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(229, 46, 113, 0.5);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .tile {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .tile:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .tile h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tile h2 i {
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #ff8a00;
+            box-shadow: 0 0 0 3px rgba(255, 138, 0, 0.3);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #00c9ff, #92fe9d);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 25px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff8a00, #e52e71);
+            color: white;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .stat-card .label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.15);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 School Student Management System</h1>
+            <p>Modern, Glossy & Tile-Based Interface</p>
+        </header>
+
+        <nav>
+            <button class="active">Student Profile</button>
+            <button>Attendance</button>
+            <button>Health Info</button>
+            <button>Marks Entry</button>
+            <button>Teacher Dashboard</button>
+            <button>Student Results</button>
+        </nav>
+
+        <div class="dashboard">
+            <div class="tile">
+                <h2>📝 Student Profile</h2>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter student name">
+                </div>
+                <div class="form-group">
+                    <label for="class">Class</label>
+                    <select id="class">
+                        <option value="">Select Class</option>
+                        <option value="1">Class 1</option>
+                        <option value="2">Class 2</option>
+                        <option value="3">Class 3</option>
+                        <option value="4">Class 4</option>
+                        <option value="5">Class 5</option>
+                        <option value="6">Class 6</option>
+                        <option value="7">Class 7</option>
+                        <option value="8">Class 8</option>
+                        <option value="9">Class 9</option>
+                        <option value="10">Class 10</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reg">Registration Number</label>
+                    <input type="text" id="reg" placeholder="Registration number">
+                </div>
+                <button class="btn btn-primary">Save Profile</button>
+            </div>
+
+            <div class="tile">
+                <h2>📅 Attendance</h2>
+                <div class="form-group">
+                    <label for="month">Select Month</label>
+                    <select id="month">
+                        <option value="">Select Month</option>
+                        <option value="jan">January</option>
+                        <option value="feb">February</option>
+                        <option value="mar">March</option>
+                        <option value="apr">April</option>
+                        <option value="may">May</option>
+                        <option value="jun">June</option>
+                        <option value="jul">July</option>
+                        <option value="aug">August</option>
+                        <option value="sep">September</option>
+                        <option value="oct">October</option>
+                        <option value="nov">November</option>
+                        <option value="dec">December</option>
+                    </select>
+                </div>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="label">Present</div>
+                        <div class="number">22</div>
+                        <div class="label">Days</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Absent</div>
+                        <div class="number">8</div>
+                        <div class="label">Days</div>
+                    </div>
+                </div>
+                <button class="btn">Update Attendance</button>
+            </div>
+
+            <div class="tile">
+                <h2>❤️ Health Information</h2>
+                <div class="form-group">
+                    <label for="height">Height (cm)</label>
+                    <input type="number" id="height" placeholder="Enter height">
+                </div>
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" placeholder="Enter weight">
+                </div>
+                <div class="form-group">
+                    <label>BMI</label>
+                    <input type="text" value="22.5 (Normal)" readonly style="background: rgba(46, 204, 113, 0.2);">
+                </div>
+                <button class="btn">Save Health Info</button>
+            </div>
+
+            <div class="tile">
+                <h2>📊 Marks Entry</h2>
+                <div class="form-group">
+                    <label for="term">Select Term</label>
+                    <select id="term">
+                        <option value="1">Term 1</option>
+                        <option value="2">Term 2</option>
+                    </select>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Marks</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mathematics</td>
+                                <td>85</td>
+                                <td>A</td>
+                            </tr>
+                            <tr>
+                                <td>Science</td>
+                                <td>78</td>
+                                <td>B+</td>
+                            </tr>
+                            <tr>
+                                <td>English</td>
+                                <td>92</td>
+                                <td>A+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-primary">Save Marks</button>
+            </div>
+
+            <div class="tile">
+                <h2>📈 Teacher Dashboard</h2>
+                <div class="search-box">
+                    <input type="text" placeholder="Search student...">
+                    <button class="btn">🔍</button>
+                </div>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="label">Total Students</div>
+                        <div class="number">128</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Avg. Attendance</div>
+                        <div class="number">85%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Top Performer</div>
+                        <div class="number">Rahul Sharma</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Avg. Grade</div>
+                        <div class="number">B+</div>
+                    </div>
+                </div>
+                <button class="btn">Export Report</button>
+            </div>
+
+            <div class="tile">
+                <h2>🏆 Student Results</h2>
+                <div class="form-group">
+                    <label for="result-class">Select Class</label>
+                    <select id="result-class">
+                        <option value="">Select Class</option>
+                        <option value="1">Class 1</option>
+                        <option value="2">Class 2</option>
+                        <option value="3">Class 3</option>
+                        <option value="4">Class 4</option>
+                        <option value="5">Class 5</option>
+                        <option value="6">Class 6</option>
+                        <option value="7">Class 7</option>
+                        <option value="8">Class 8</option>
+                        <option value="9">Class 9</option>
+                        <option value="10">Class 10</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="student">Select Student</label>
+                    <select id="student">
+                        <option value="">Select Student</option>
+                        <option value="1">Rahul Sharma</option>
+                        <option value="2">Priya Patel</option>
+                        <option value="3">Amit Kumar</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary">Show Result</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 School Student Management System | Modern Glossy UI Design</p>
+        </footer>
+    </div>
+</body>
+</html>

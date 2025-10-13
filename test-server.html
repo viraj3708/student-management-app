@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Server Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Management Application</h1>
+        <p>Click the button below to start the application:</p>
+        <button class="button" onclick="startApp()">Start Application</button>
+        <p>If the application doesn't open automatically, manually navigate to:</p>
+        <p><strong>http://localhost:8080</strong></p>
+    </div>
+
+    <script>
+        function startApp() {
+            // Try to open the application in a new tab
+            window.open('http://localhost:8080', '_blank');
+            
+            // Show a message
+            alert('The application should now be opening in a new tab.\nIf it does not open, please manually navigate to http://localhost:8080');
+        }
+    </script>
+</body>
+</html>
