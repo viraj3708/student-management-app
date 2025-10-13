@@ -25,17 +25,15 @@
    ```
    Replace YOUR-USERNAME with your actual GitHub username.
 
-3. **Verify Deployment**
-   - Visit: https://github.com/YOUR-USERNAME/student-management-app
-   - You should see all your files
-
-4. **Enable GitHub Pages** (Optional - for web hosting)
-   - Go to your repository settings on GitHub
-   - Scroll to "Pages" section
-   - Select "Deploy from a branch"
-   - Choose "main" branch and "/ (root)" folder
+3. **Enable GitHub Pages** (REQUIRED for web hosting)
+   - Go to your repository settings on GitHub: https://github.com/viraj3708/student-management-app/settings/pages
+   - Under "Build and deployment", select "GitHub Actions" as the source
    - Click "Save"
-   - Your site will be available at: https://YOUR-USERNAME.github.io/student-management-app
+   - This step is MANDATORY for the application to work
+
+4. **Verify Deployment**
+   - Visit: https://github.com/viraj3708/student-management-app/actions to see workflow runs
+   - After a successful workflow, your site will be available at: https://viraj3708.github.io/student-management-app
 
 ## Option 2: Direct File Upload to GitHub
 
@@ -79,6 +77,11 @@ For local use only:
 3. **Permission Denied**
    - Make sure you're the owner of the repository
    - Check that you have write permissions
+
+4. **GitHub Pages Not Working**
+   - ENSURE GitHub Pages is enabled in repository settings
+   - Select "GitHub Actions" as the source in Pages settings
+   - Wait for the workflow to complete successfully
 
 ### Need Help?
 

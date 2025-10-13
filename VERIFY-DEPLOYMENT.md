@@ -2,25 +2,23 @@
 
 ## How to Verify Your Deployment
 
-### Step 1: Enable GitHub Pages
+### Step 1: Enable GitHub Pages (MANDATORY)
 
-1. Go to your repository on GitHub: https://github.com/YOUR-USERNAME/student-management-app
-2. Click on the "Settings" tab
-3. Scroll down to the "Pages" section
-4. Under "Source", select:
-   - Branch: main
-   - Folder: / (root)
-5. Click "Save"
+1. Go to your repository on GitHub: https://github.com/viraj3708/student-management-app/settings/pages
+2. Under "Build and deployment", select "GitHub Actions" as the source
+3. Click "Save"
+4. This step MUST be completed or the deployment will fail
 
 ### Step 2: Wait for Deployment
 
-- GitHub Pages deployment usually takes 1-2 minutes
-- You'll see a notification: "Your site is published at https://YOUR-USERNAME.github.io/student-management-app"
+- GitHub Actions deployment usually takes 2-5 minutes
+- Check the "Actions" tab to see workflow progress: https://github.com/viraj3708/student-management-app/actions
+- Wait for the workflow to complete successfully (green checkmark)
 
 ### Step 3: Verify Deployment Success
 
 #### Visual Check
-1. Visit your site: https://YOUR-USERNAME.github.io/student-management-app
+1. Visit your site: https://viraj3708.github.io/student-management-app
 2. You should see:
    - The login screen with "Student Management System" title
    - Username: admin
@@ -51,7 +49,7 @@
 #### Issue 1: "Site not found" (404)
 **Solution:**
 - Check that GitHub Pages is enabled in repository settings
-- Verify the source branch is set to "main" and folder to "/"
+- Verify the source is set to "GitHub Actions"
 - Wait a few more minutes for deployment to complete
 
 #### Issue 2: Blank page or loading issues
@@ -66,11 +64,18 @@
 - Verify browser compatibility (modern browsers recommended)
 - Check console for specific error messages
 
+#### Issue 4: GitHub Actions failing
+**Solution:**
+- Ensure GitHub Pages is enabled with "GitHub Actions" source
+- Check that the repository owner has granted proper permissions
+- Look at the specific error message in the Actions tab
+
 ### Step 5: Confirmation Checklist
 
 □ GitHub Pages is enabled in repository settings
-□ Source branch is set to "main" with "/" folder
-□ Site is accessible at https://YOUR-USERNAME.github.io/student-management-app
+□ Source is set to "GitHub Actions"
+□ Workflow completed successfully in Actions tab
+□ Site is accessible at https://viraj3708.github.io/student-management-app
 □ Login screen displays correctly
 □ All dashboard features are accessible
 □ Data can be entered and saved
