@@ -47,3 +47,12 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v3
+      continue-on-error: true
+
+    - name: Deployment Status
+      if: failure()
+      run: |
+        echo "DEPLOYMENT FAILED - IMPORTANT: Please ensure GitHub Pages is enabled in repository settings"
+        echo "Go to: https://github.com/viraj3708/student-management-app/settings/pages"
+        echo "Select 'GitHub Actions' as the source and click 'Save'"
+        echo "Then push a new commit to trigger deployment again"
