@@ -3,17 +3,17 @@
 ## Repository Information
 - **Repository URL**: https://github.com/viraj3708/student-management-app
 - **Branch**: main
-- **Latest Commit**: b49e751
+- **Latest Commit**: 98001e8
 
 ## Deployment Status
 ✅ **Successfully pushed to GitHub**
+✅ **GitHub Actions workflow configured**
 ✅ **All files uploaded**
-✅ **Build process verified**
 ✅ **Documentation complete**
 
 ## Files Included
 1. **Source Code**: Complete React application
-2. **Build Output**: Optimized production files in `dist/` folder
+2. **Build Configuration**: Vite configuration for GitHub Pages
 3. **Documentation**:
    - README.md - Project overview and usage instructions
    - DEPLOYMENT-GUIDE.md - Step-by-step deployment instructions
@@ -26,7 +26,7 @@
 2. Click "Settings" tab
 3. Scroll to "Pages" section
 4. Set source to:
-   - Branch: main
+   - Branch: gh-pages
    - Folder: /
 5. Click "Save"
 6. Wait 1-2 minutes for deployment
@@ -35,6 +35,15 @@
 
 Once GitHub Pages is enabled, your application will be available at:
 **https://viraj3708.github.io/student-management-app**
+
+## GitHub Actions Workflow
+
+This repository is configured with a GitHub Actions workflow that:
+1. Automatically builds the application on every push to the main branch
+2. Deploys the built files to the gh-pages branch
+3. Makes the application available through GitHub Pages
+
+The workflow file is located at `.github/workflows/deploy.yml`
 
 ## Verification Steps
 
