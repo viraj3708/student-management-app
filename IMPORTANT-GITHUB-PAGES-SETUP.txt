@@ -1,0 +1,20 @@
+IMPORTANT: GITHUB PAGES SETUP REQUIRED
+
+The GitHub Actions deployment is failing because GitHub Pages has not been enabled.
+
+REPOSITORY OWNER (viraj3708) - PLEASE FOLLOW THESE STEPS:
+
+1. GO TO: https://github.com/viraj3708/student-management-app/settings/pages
+
+2. UNDER "BUILD AND DEPLOYMENT":
+   - SELECT "GITHUB ACTIONS" AS THE SOURCE
+   - CLICK "SAVE"
+
+3. AFTER SAVING, THE DEPLOYMENT WILL WORK AUTOMATICALLY
+
+THIS IS THE ONLY MISSING STEP PREVENTING THE APPLICATION FROM BEING DEPLOYED.
+
+Once this is done, the site will be available at:
+https://viraj3708.github.io/student-management-app/
+
+If you have any questions, please contact Santosh Bansode.
