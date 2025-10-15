@@ -95,6 +95,16 @@ The application is configured to work with the following structure:
 3. Test the deployed application at the expected URL
 4. Confirm all features work as expected in the browser
 
+### Automated Verification
+
+You can also use the provided verification script to check deployment status:
+
+```bash
+node verify-deployment.js
+```
+
+This script will check if your GitHub Pages site is accessible and provide troubleshooting guidance if needed.
+
 ## Need Help?
 
 If you encounter any issues:
