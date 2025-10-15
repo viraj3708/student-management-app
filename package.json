@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "verify-deploy": "node verify-deployment.js"
+    "verify-deploy": "node verify-deployment.cjs"
   },
   "dependencies": {
     "html2canvas": "^1.4.1",
