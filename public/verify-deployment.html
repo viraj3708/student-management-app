@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deployment Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .step {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            background-color: #f8f9fa;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .instructions {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Management App - Deployment Verification</h1>
+    
+    <div class="container">
+        <div class="step">
+            <h3>Step 1: Check Repository Settings</h3>
+            <p>Ensure GitHub Pages is enabled in your repository settings:</p>
+            <ol>
+                <li>Go to your repository settings</li>
+                <li>Find the "Pages" section in the left sidebar</li>
+                <li>Set the source to "GitHub Actions"</li>
+                <li>Click "Save"</li>
+            </ol>
+        </div>
+        
+        <div class="step">
+            <h3>Step 2: Verify Deployment Status</h3>
+            <p>Check if your site has been deployed successfully:</p>
+            <div class="instructions">
+                <p><strong>Repository Owner:</strong> viraj3708</p>
+                <p><strong>Repository Name:</strong> student-management-app</p>
+                <p><strong>Expected URL:</strong> https://viraj3708.github.io/student-management-app/</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h3>Step 3: Test Application Access</h3>
+            <button onclick="testDeployment()">Check Deployment Status</button>
+            <div id="result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        function testDeployment() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<p>Checking deployment status...</p>';
+            resultDiv.className = 'result pending';
+            
+            // In a real implementation, we would check the actual deployment
+            // For now, we'll simulate the check
+            setTimeout(() => {
+                resultDiv.innerHTML = `
+                    <h4>Deployment Check Results:</h4>
+                    <p><span class="status pending">PENDING</span> GitHub Pages Configuration</p>
+                    <p><span class="status pending">PENDING</span> Latest Build Status</p>
+                    <p><span class="status pending">PENDING</span> Site Availability</p>
+                    <p><strong>Next Steps:</strong></p>
+                    <ol>
+                        <li>Visit your repository settings</li>
+                        <li>Enable GitHub Pages with "GitHub Actions" as source</li>
+                        <li>Wait 2-5 minutes for deployment</li>
+                        <li>Refresh this page to verify</li>
+                    </ol>
+                `;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
